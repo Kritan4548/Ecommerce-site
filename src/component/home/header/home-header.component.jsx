@@ -3,7 +3,7 @@ import { useState } from "react";
 import {  Container, Form, Navbar} from "react-bootstrap";
 
 
-
+import { NavLink } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
 
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -22,7 +22,7 @@ const HomeHeader = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
+            <NavLink to="/" className="nav-link">Home</NavLink>
             <Nav.Link href="#link">Shop</Nav.Link>
             <NavDropdown title="Category" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Category 1</NavDropdown.Item>
@@ -43,7 +43,7 @@ const HomeHeader = () => {
             <Nav.Link href="#">Cart(0)</Nav.Link>
             <Nav.Link href="#home">Kritan sitaula</Nav.Link>
             <Nav.Link href="#link">Logout</Nav.Link>
-            <Nav.Link href="#home">Login</Nav.Link>
+            <NavLink to="/login" className="nav-link">Login</NavLink>
             <Nav.Link href="#link">Signup</Nav.Link>
            
           </Nav>
