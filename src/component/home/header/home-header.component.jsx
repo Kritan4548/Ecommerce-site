@@ -5,7 +5,7 @@ import {  Container, Form, Navbar} from "react-bootstrap";
 
 import { NavLink } from "react-router-dom";
 import Nav from 'react-bootstrap/Nav';
-
+import {FaMicrochip, FaMobile} from "react-icons/fa"
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const HomeHeader = () => {
@@ -25,13 +25,9 @@ const HomeHeader = () => {
             <NavLink to="/" className="nav-link">Home</NavLink>
             <Nav.Link href="#link">Shop</Nav.Link>
             <NavDropdown title="Category" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Category 1</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Category 2
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Category 3</NavDropdown.Item>
-              
-            </NavDropdown>
+              <NavLink to="/category/electronics" className={"dropdown-item"}><FaMicrochip /> Electronics</NavLink>
+              <NavLink to="/category/smart-phone" className={"dropdown-item"}><FaMobile /> Smart Phones</NavLink>
+              </NavDropdown>
           </Nav>
           <Nav>
             <Form>
