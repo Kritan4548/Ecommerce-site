@@ -3,6 +3,7 @@ import "./index.css"
 import HomeHeader from "../../../../component/home/header/home-header.component";
 import styled from "styled-components";
 import { ButtonComponent } from "../../../../component/common/button.component";
+import { useForm } from "react-hook-form";
 
 const LoginTitle =styled.h1`
 color:#001900;
@@ -12,9 +13,13 @@ const Divider=styled.hr`
 border-color:#001900
 `
 const RegisterPage = () => {
+    const {register,handleSubmit,formState:{errors}}=useForm();
+    const registerSubmit=(data)=>{
+        console.log(data)
+    }
     return(
   <>
-  <HomeHeader />
+  
   <Container className="register-wrapper m-5">
     <Row>
         <Col sm={12} md={{offset:3,span:6}}>
@@ -24,11 +29,11 @@ const RegisterPage = () => {
     <Divider />
     <Row className="my-3 pb-5">
         <Col sm={12} md={{offset:3,span:6}}>
-            <Form>
+            <Form onSubmit={handleSubmit(registerSubmit)}> 
                 <Form.Group className="row mb-3">
                     <Form.Label className="col-sm-3">First Name</Form.Label>
                     <Col sm={9}>
-                        <Form.Control type="string" size="sm" required placeholder="Enter your First Name">
+                        <Form.Control type="string" size="sm" {...register("string",{required:true})} placeholder="Enter your First Name">
                              
                         </Form.Control>
                         <span className="text-danger">

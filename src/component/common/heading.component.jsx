@@ -1,3 +1,4 @@
+import styled from "styled-components";
 export const Heading = ({ type, value }) => {
   switch (type) {
     case "h1": {
@@ -27,6 +28,15 @@ export const Heading = ({ type, value }) => {
     }
   }
 };
+
+export const Title =styled.h1`
+color:#001900;
+text-align:center;
+`
+export const Divider=styled.hr`
+border-color:#001900
+`
+
 export const H1 = ({ value }) => {
   return <h1>{value}</h1>;
 };
