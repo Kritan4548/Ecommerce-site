@@ -40,7 +40,7 @@ const HomeHeader = () => {
             <Nav.Link href="#home">Kritan sitaula</Nav.Link>
             <Nav.Link href="#link">Logout</Nav.Link>
             <NavLink to="/login" className="nav-link">Login</NavLink>
-            <Nav.Link href="#link">Signup</Nav.Link>
+            <NavLink to="/register" className="nav-link">Signup</NavLink>
            
           </Nav>
         </Navbar.Collapse>
