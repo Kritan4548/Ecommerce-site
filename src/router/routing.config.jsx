@@ -27,11 +27,12 @@ return(<>
         <Routes>
             <Route path="/" element={<Layout.HomeLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="login" element={<LoginPage />} />
-
-            <Route path="activate/:token" element={<SetPasswordPage />} />
+            
             <Route path="register" element={<RegisterPage />} />
+            <Route path="activate/:token" element={<SetPasswordPage />} />
             <Route path="forget-password" element={<ForgetPassword />} />
+
+            <Route path="login" element={<LoginPage />} />
 
 
             <Route path="/category/:slug" element={<CategoryDetailLayout />} >

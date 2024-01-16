@@ -1,18 +1,56 @@
 
 import { Col, Container, Form, Row } from "react-bootstrap";
-import HomeHeader from "../../../../component/home/header/home-header.component";
-import styled from "styled-components";
+
 import "./index.css"
 import { ButtonComponent } from "../../../../component/common/button.component";
 import { useForm } from "react-hook-form";
 import { Title,Divider } from "../../../../component/common/heading.component";
-
+import * as Yup from "yup"
+import {yupResolver} from "@hookform/resolvers/yup"
+import authSvc from "../auth.service";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const LoginPage = () => {
-    const {register,handleSubmit,formState:{errors}}=useForm();
-    const loginSubmit =(data)=>{
-        console.log(data)
+    const navigate=useNavigate()
+    const loginSchmea=Yup.object({
+        email:Yup.string().email().required(),
+        password:Yup.string().required()
+    })
+    const {register,handleSubmit,formState:{errors}}=useForm({
+        resolver:yupResolver(loginSchmea)
+    });
+    
+    
+    const loginSubmit =async (data)=>{
+        // console.log(data)
+        try{
+            let response=await authSvc.loginUser(data)
+           const loggedInUser=await authSvc.getLoggedInUser()
+           localStorage.setItem("_user",JSON.stringify({
+            userId:loggedInUser.result._id,
+            name:loggedInUser.result.name,
+            role:loggedInUser.result.role
+           }))
+           toast.success(`${loggedInUser.result.name}!! Welcome to ${loggedInUser.result.role} panel!!`)
+            navigate("/"+loggedInUser.result.role)
+        }catch(exception){
+            
+            toast.error(exception.message)
+
+        }
     }
+
+
+    useEffect(()=>{
+        let token=localStorage.getItem('_au')
+        let user=JSON.parse(localStorage.getItem("_user"))
+        if(token && user){
+            toast.info("You are already logged In")
+            navigate('/'+user.role)
+        }
+    },[])
     return(
   <>
  
@@ -35,7 +73,7 @@ const LoginPage = () => {
                              
                         </Form.Control>
                         <span className="text-danger">
-                            <em>{errors.email ? "Email is required" : ""}</em>
+                            <em>{errors?.email?.message}</em>
                         </span>
                     </Col>
                 </Form.Group>
@@ -48,7 +86,7 @@ const LoginPage = () => {
                              
                         </Form.Control>
                         <span className="text-danger">
-                            <em></em>
+                            <em>{errors?.password?.message}</em>
                         </span>
                     </Col>
                 </Form.Group>

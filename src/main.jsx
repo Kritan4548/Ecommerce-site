@@ -5,12 +5,15 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import "./assests/css/main.css"
 import "bootstrap";
-import LoginPage from "./pages/home/auth/login";
-import RegisterPage from "./pages/home/auth/register/index";
-import ForgetPassword from "./pages/home/auth/forget-password";
+
 import Routing from "../src/router/routing.config";
+import  ThemeProvider  from "./config/theme.context";
 
 const root=ReactDOM.createRoot(document.getElementById("root"))
 root.render(<React.StrictMode>
-<Routing />
+<ThemeProvider>
+    <Routing />
+</ThemeProvider>
+
+
 </React.StrictMode>)

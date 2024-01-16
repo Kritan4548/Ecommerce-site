@@ -6,14 +6,15 @@ import { useForm } from "react-hook-form";
 
 import { Divider, Title } from "../../../../component/common/heading.component";
 import placeholder from "../../../../assests/images/placeholder.webp"
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Select from "react-select";
-import axios from "axios";
+
 import * as Yup from "yup"
 import {yupResolver} from "@hookform/resolvers/yup"
 import { toast } from "react-toastify";
-import axiosInstance from "../../../../repository/axios.config";
+
 import authSvc from "../auth.service";
+import { useNavigate } from "react-router-dom";
 const options=[
     {value:'seller', label:"Seller"},
     {value:'customer', label:"Buyer"}
@@ -23,6 +24,9 @@ const options=[
 ]
 
 const RegisterPage = () => {
+   const[loading,setLoading]=useState(false)
+
+   const navigate=useNavigate()
     const [thumb,setThumb]=useState();
     const registerSchmea=Yup.object({
         name:Yup.string().min(2).max(30).required(),
@@ -38,26 +42,39 @@ const RegisterPage = () => {
     });
     const registerSubmit=async(data)=>{
         try{
+      setLoading(true)
             data.role=data.role.value;
-        console.log(data)
+       
 
         const response =await authSvc.registerProcess(data)
-        console.log(response)
-        toast.success(response.data.msg)
+      
+        toast.success(response.msg)
+        navigate("/")
         }catch(exception){
             console.log(exception)
-            toast.error(exception.response.data.message)
-            exception.response.data.result.map((obj)=>{
-                const keys=Object.keys(obj);
-                setError(keys[0],obj[keys[0]])
-            })
+            toast.error(exception.message)
+            // exception.response.data.result.map((obj)=>{
+            //     const keys=Object.keys(obj);
+            //     setError(keys[0],obj[keys[0]])
+            //})
+        }finally{
+            setLoading(false)
         }
     }
+
+    useEffect(()=>{
+        let token=localStorage.getItem('_au')
+        let user=JSON.parse(localStorage.getItem("_user"))
+        if(token && user){
+            toast.info("You are already logged In")
+            navigate('/'+user.role)
+        }
+    },[])
     
     return(
   <>
   
-  <Container className="register-wrapper m-5">
+  <Container className="register-wrapper my-5">
     <Row>
         <Col sm={12} md={{offset:3,span:6}}>
             <Title>Register Page</Title>
@@ -70,7 +87,7 @@ const RegisterPage = () => {
                 <Form.Group className="row mb-3">
                     <Form.Label className="col-sm-3">Full Name:</Form.Label>
                     <Col sm={9}>
-                        <Form.Control type="text" size="sm" {...register("name",{required:true})} 
+                        <Form.Control type="text" size="sm" {...register("name",{required:true,disabled:loading})} 
                         placeholder="Enter your First Name">
                              
                         </Form.Control>
@@ -83,7 +100,7 @@ const RegisterPage = () => {
                 <Form.Group className="row mb-3">
                     <Form.Label className="col-sm-3">Email</Form.Label>
                     <Col sm={9}>
-                        <Form.Control type="email" size="sm" {...register("email",{required:true})} placeholder="Enter your Email">
+                        <Form.Control type="email" size="sm" {...register("email",{required:true,disabled:loading})} placeholder="Enter your Email">
                              
                         </Form.Control>
                         <span className="text-danger">
@@ -94,7 +111,9 @@ const RegisterPage = () => {
                 <Form.Group className="row mb-3">
                     <Form.Label className="col-sm-3">Role:</Form.Label>
                     <Col sm={9}>
-                        <Select options={options} 
+                        <Select
+                        isDisabled={loading}
+                         options={options} 
                         onChange={(e)=>{
                             setValue("role",e)
                         }} />
@@ -124,6 +143,7 @@ const RegisterPage = () => {
                     <Form.Label className="col-sm-3">Image:</Form.Label>
                     <Col sm={7}>
                         <Form.Control type="file" size="sm"
+                        disabled={loading}
                         onChange={(e)=>{
                            // const files =Object.values(e.target.files);
                            const image=e.target.files[0]
@@ -155,8 +175,8 @@ const RegisterPage = () => {
                 
                 <Form.Group className="row mb-3">
                    <Col sm={{offset:3,span:9}}>
-                    <ButtonComponent className="btn-danger me-3" type="cancel" label="Cancel"></ButtonComponent>
-                    <ButtonComponent className="btn-success" type="submit" label="Submit"></ButtonComponent>
+                    <ButtonComponent loading={loading} className="btn-danger me-3" type="cancel" label="Cancel"></ButtonComponent>
+                    <ButtonComponent loading={loading} className="btn-success" type="submit" label="Submit"></ButtonComponent>
                     </Col>
                 </Form.Group>
             </Form>
