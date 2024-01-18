@@ -27,14 +27,13 @@ const LoginPage = () => {
         // console.log(data)
         try{
             let response=await authSvc.loginUser(data)
-           const loggedInUser=await authSvc.getLoggedInUser()
+            const userDetail=response.userDetail;
+          // const loggedInUser=await authSvc.getLoggedInUser()
            localStorage.setItem("_user",JSON.stringify({
-            userId:loggedInUser.result._id,
-            name:loggedInUser.result.name,
-            role:loggedInUser.result.role
+            ...userDetail
            }))
-           toast.success(`${loggedInUser.result.name}!! Welcome to ${loggedInUser.result.role} panel!!`)
-            navigate("/"+loggedInUser.result.role)
+           toast.success(`${userDetail.name}!! Welcome to ${userDetail.role} panel!!`)
+            navigate("/"+userDetail.role)
         }catch(exception){
             
             toast.error(exception.message)

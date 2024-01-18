@@ -6,7 +6,8 @@ import authSvc from "../home/auth/auth.service";
 
 const PermissionCheck =({
     accessBy,
-    Component
+    Component,
+    children
 }) =>{
     const[loading,setLoading]=useState(true)
     const [user,setUser]=useState()

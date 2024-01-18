@@ -11,8 +11,7 @@ import * as Layout from "../pages/layouts";
 // import CMSLayout from "../pages/layouts/cms/cms.layout";
 // import HomeLayout from "../pages/layouts/home/home.layout";
 import AdminDashBoard from "../pages/cms/dashboard/dashboard.page";
-import BannerLayout from "../pages/cms/banner/banner.layout";
-import BannerList from "../pages/cms/banner/banner-list.page";
+import { BannerCreate,BannerLayout,BannerList } from "../pages/cms/banner";
 import PermissionCheck from "../pages/common/checkPermission.page";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css"
@@ -47,7 +46,7 @@ return(<>
                 <Route path="banner" element={<BannerLayout />}>
                 <Route index element={<BannerList />}></Route>
                 
-                <Route path="create" element={<>Create Component</>}></Route>
+                <Route path="create" element={<BannerCreate />}></Route>
                  </Route> 
                  <Route path="*" element={<Error404 />} />
             </Route>
