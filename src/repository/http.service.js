@@ -46,6 +46,30 @@ class HttpService {
             throw exception
         }
     }
+    deleteRequest=async (url,config=null) =>{
+        try{
+            this.getHeader(config)
+            let response=await axiosInstance.delete(url,{
+                headers:this.headers
+            })
+            return response
+        }catch(exception){
+            console.log("DeleteReq:",exception)
+            throw exception
+        }
+    }
+    putRequest =async (url,data={},config=null)=>{
+        try{
+            this.getHeader(config)
+            let response =await axiosInstance.put(url,data,{
+                headers:this.headers
+            })
+            return response;
+        }catch(exception){
+            console.log("PutReq:",exception)
+            throw exception
+        }
+    }
 }
 
 export default HttpService;

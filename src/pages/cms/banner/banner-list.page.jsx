@@ -1,14 +1,12 @@
 import { Card, Container, Table, Pagination, Spinner, Badge, Image } from "react-bootstrap"
-
 import Breadcrumb from "../../../component/cms/breadcrumb/breadcrumb.component"
 import { NavLink } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import bannerSvc from "./banner.service"
 import { Heading } from "../../../component/common/heading.component"
-
 import TablePagination from "../../../component/common/pagination/pagination.component"
-
+import Swal from "sweetalert2"
 const BannerList = () =>{
     const [data, setData] = useState()
     const [loading, setLoading] = useState(true)
@@ -34,7 +32,20 @@ const BannerList = () =>{
         // api consume 
           listBanners({page:1})
       }, [])
-      console.log(pagination)
+      
+      const handleDelete = async (id)=>{
+         
+          try{
+            setLoading(true)
+            let response=await bannerSvc.deleteById(id)
+            toast.success("Banner deleted Successfully")
+            listBanners({page:1})
+          }catch(exception){
+            toast.error("Banner cannot be deleted or already deleted.")
+          }finally{
+            setLoading(false)
+          }
+      }
     return (
         <>
         <Container fluid className="px-4">
@@ -90,7 +101,22 @@ const BannerList = () =>{
                                 <NavLink to={'/admin/banner/'+row._id} className={"btn btn-sm btn-warning rounded-circle me-1"}>
                                   <i className="fa fa-pen text-white"></i>
                                 </NavLink>
-                                <NavLink to={'/admin/banner/'+row._id} className={"btn btn-sm btn-danger rounded-circle me-1"}>
+                                <NavLink onClick={(e)=>{
+                                  e.preventDefault()
+                                  Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes, delete it!"
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      handleDelete(row._id)
+                                    }
+                                  });
+                                   }} to={'/admin/banner/'+row._id} className={"btn btn-sm btn-danger rounded-circle me-1"}>
                                   <i className="fa fa-trash text-white"></i>
                                 </NavLink>
                               </td>

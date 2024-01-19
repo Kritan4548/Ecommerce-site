@@ -25,6 +25,41 @@ class BannerService extends HttpService {
             throw exception
         }
     }
+
+    deleteById =async(id)=>{
+        try{
+            let response=await this.deleteRequest(
+                '/v1/banner/'+id,
+                {auth:true}
+            )
+            return response;
+        }catch(exception){
+            throw exception
+        }
+    }
+    updateBanner =async (id,data) =>{
+        try{
+            let response=await this.putRequest(
+                '/v1/banner/'+id,
+                data,
+                {file:true,auth:true}
+            )
+            return response;
+        }catch(exception){
+            throw exception
+        }
+    }
+    getBannerById =async(id) =>{
+        try{
+            let response=await this.getRequest(
+                '/v1/banner/'+id,
+                {auth:true}
+            )
+            return response;
+        }catch(exception){
+            throw exception
+        } 
+    }
 }
 
 const bannerSvc = new BannerService()

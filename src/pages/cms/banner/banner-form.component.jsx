@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup"
 import { ErrorMessage } from "../../../component/common/validation-message/validation-message.component";
 import { ImageUploader } from "../../../component/common/form/input.component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonComponent } from "../../../component/common/button.component";
 import placeholder from "../../../assests/images/placeholder.webp"
-const BannerForm = ({submitEvent,loading=false}) =>{
+const BannerForm = ({submitEvent,loading=false,detail=null}) =>{
     const[thumb,setThumb]=useState()
     const bannerSchema =Yup.object({
         title:Yup.string().min(3).required(),
@@ -22,6 +22,17 @@ const BannerForm = ({submitEvent,loading=false}) =>{
     const submitForm =(data)=>{
         submitEvent(data)
     }
+
+    useEffect (()=>{
+        if(detail){
+            (Object.keys(detail)).map((field,ind)=>{
+                if(field !== 'image'){
+                    setValue(field,detail[field])
+                }
+            })
+            setThumb(detail.image)
+        }
+    },[detail])
     return(
         <>
         <Form onSubmit={handleSubmit(submitForm)}>
@@ -73,7 +84,9 @@ const BannerForm = ({submitEvent,loading=false}) =>{
                     <ErrorMessage message={errors?.image?.message} />
                 </Col>
                     <Col sm={2}>
-                    <Image src={thumb ? URL.createObjectURL(thumb) : placeholder} fluid alt="" />
+                    <Image src={thumb ?
+                        (typeof thumb === 'string') ? import.meta.env.VITE_IMAGE_URL+"banner/"+thumb: URL.createObjectURL(thumb)
+                        : placeholder} fluid alt="" />
                     </Col>
                 </Form.Group>
                 <Form.Group className="row-mb-3">
