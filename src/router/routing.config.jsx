@@ -12,6 +12,10 @@ import * as Layout from "../pages/layouts";
 // import HomeLayout from "../pages/layouts/home/home.layout";
 import AdminDashBoard from "../pages/cms/dashboard/dashboard.page";
 import { BannerCreate,BannerLayout,BannerList,BannerEdit } from "../pages/cms/banner";
+import { BrandCreate,BrandLayout,BrandList,BrandEdit } from "../pages/cms/brand";
+import { CategoryCreate,CategoryLayout,CategoryList,CategoryEdit } from "../pages/cms/category";
+
+
 import PermissionCheck from "../pages/common/checkPermission.page";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css"
@@ -43,12 +47,25 @@ return(<>
 
             <Route path="/admin" element={<PermissionCheck accessBy={"admin"} Component={<Layout.CMSLayout />}/>}>
                 <Route index element={<AdminDashBoard />}></Route>
+                
                 <Route path="banner" element={<BannerLayout />}>
                 <Route index element={<BannerList />}></Route>
-                
                 <Route path="create" element={<BannerCreate />}></Route>
                 <Route path=":id" element={<BannerEdit />}></Route>
                  </Route> 
+
+                 <Route path="brand" element={<BrandLayout />}>
+                <Route index element={<BrandList />}></Route>
+                <Route path="create" element={<BrandCreate />}></Route>
+                <Route path=":id" element={<BrandEdit />}></Route>
+                 </Route> 
+
+                 <Route path="category" element={<CategoryLayout />}>
+                <Route index element={<CategoryList />}></Route>
+                <Route path="create" element={<CategoryCreate />}></Route>
+                <Route path=":id" element={<CategoryEdit />}></Route>
+                 </Route> 
+                
                  <Route path="*" element={<Error404 />} />
             </Route>
 
